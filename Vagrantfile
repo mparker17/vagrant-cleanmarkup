@@ -26,8 +26,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # VM.
   config.ssh.forward_agent = true
 
-  # Ensure we're using the latest version of Chef.
-  config.omnibus.chef_version = :latest
+  # Ensure we're using a recent version of Chef.
+  # Apparently librarian-chef uses 11.6.2 so let's go with that.
+  config.omnibus.chef_version = "11.6.2"
   
   # Tell Chef where to find cookbooks downloaded with Librarian.
   config.librarian_chef.cheffile_dir = "contrib-recipes"
