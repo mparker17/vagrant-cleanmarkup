@@ -12,6 +12,8 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.hostname = "cleanmarkup.dev"
+
   config.vm.box = "precise64"
   config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
@@ -29,19 +31,33 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Ensure we're using a recent version of Chef.
   # Apparently librarian-chef uses 11.6.2 so let's go with that.
   config.omnibus.chef_version = "11.6.2"
-  
+
   # Tell Chef where to find cookbooks downloaded with Librarian.
   config.librarian_chef.cheffile_dir = "contrib-recipes"
 
-  # TODO: Provision.
-  # config.vm.provision :chef_solo do |chef|
-  #   chef.cookbooks_path = ["contrib-recipes/cookbooks", "my-recipes/cookbooks"]
-  #   chef.roles_path = "./my-recipes/roles"
-  #   chef.data_bags_path = "./my-recipes/data_bags"
-  #   chef.add_recipe "mysql"
-  #   chef.add_role "web"
-  #
-  #   # You may also specify custom JSON attributes:
-  #   chef.json = { :mysql_password => "foo" }
-  # end
+  # Provision.
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = ["contrib-recipes/cookbooks", "my-recipes/cookbooks"]
+    chef.roles_path = "./my-recipes/roles"
+    chef.data_bags_path = "./my-recipes/data_bags"
+
+    # On ubuntu hosts, run recipe "apt::default" first so that apt-get update
+    # is run ASAP.
+    chef.add_recipe "apt::default"
+
+    # Applications we will need.
+    chef.add_recipe "apache2"
+    chef.add_recipe "database"
+    chef.add_recipe "mysql::server"
+    chef.add_recipe "php"
+
+    # Settings.
+    chef.json = {
+      "mysql" => {
+        "server_root_password" => "root",
+        "server_repl_password" => "root",
+        "server_debian_password" => "root"
+      }
+    }
+  end
 end
