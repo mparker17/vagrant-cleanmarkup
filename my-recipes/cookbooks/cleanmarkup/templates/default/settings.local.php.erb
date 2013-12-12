@@ -1,0 +1,12 @@
+<?php
+$databases['default']['default'] = array(
+  'driver' => 'mysql',
+  'database' => "<%= node['cleanmarkup']['drop_local_db_database'] %>",
+  'username' => "<%= node['cleanmarkup']['drop_local_db_username'] %>",
+  'password' => "<%= node['cleanmarkup']['drop_local_db_password'] %>",
+  'host' => 'localhost',
+  'prefix' => '',
+  'collation' => 'utf8_general_ci',
+);
+$conf['file_temporary_path'] = "<%= node['cleanmarkup']['drop_path'] %>/tmp";
+$conf['file_private_path'] = "<%= node['cleanmarkup']['drop_path'] %>/files-private";

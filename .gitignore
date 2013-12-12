@@ -3,3 +3,4 @@ contrib-recipes/data_bags/*
 contrib-recipes/roles/*
 contrib-recipes/tmp
 .vagrant
+data/
