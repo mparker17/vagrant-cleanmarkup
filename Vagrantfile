@@ -71,7 +71,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       "mysql" => {
         "server_root_password" => "root",
         "server_repl_password" => "root",
-        "server_debian_password" => "root"
+        "server_debian_password" => "root",
+        "tunable" => {
+          "wait_timeout" => "28800",
+          "innodb_lock_wait_timeout" => "28800"
+        }
       },
       "cleanmarkup" => {
         "drupal_download" => "http://ftp.drupal.org/files/projects/drupal-7.24.tar.gz",
